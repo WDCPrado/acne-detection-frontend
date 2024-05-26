@@ -28,10 +28,13 @@ const useImageUpload = () => {
       formData.append("file", file);
 
       try {
-        const response = await fetch("http://127.0.0.1:8000/detect_image", {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/detect_image`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
         const result = await response.json();
         console.log(result);
         drawImageOnCanvas(result.image);
