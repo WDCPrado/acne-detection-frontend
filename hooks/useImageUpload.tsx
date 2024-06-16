@@ -20,25 +20,24 @@ const useImageUpload = () => {
   };
 
   const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
+    email: string
   ) => {
     const file = event.target.files?.[0];
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("email", email);
 
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/detect_image`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
+        const response = await fetch(`/api/predict`, {
+          method: "POST",
+          body: formData,
+        });
         const result = await response.json();
-        console.log(result);
         drawImageOnCanvas(result.image);
-      } catch (error: any) {
+        console.log(result);
+      } catch (error) {
         console.error(error);
       }
     }
